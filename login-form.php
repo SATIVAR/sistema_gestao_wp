@@ -51,7 +51,7 @@
 
     <!-- Link "Perdeu a senha?" -->
     <div class="text-center">
-        <a class="text-sm text-slate-600 hover:text-emerald-600 hover:underline transition-colors" href="#!">
+        <a class="text-sm text-slate-600 hover:text-emerald-600 hover:underline transition-colors" href="<?php bloginfo('url') ?>">
             Esqueceu sua senha?
         </a>
     </div>
