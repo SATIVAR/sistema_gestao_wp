@@ -152,7 +152,7 @@ if (!empty($logo_url)) {
             </div>
             
             <!-- Texto de apresentação com animação -->
-            <div class="opacity-0 animate-fade-in-up animate-delay-200 mb-12 text-md font-normal text-slate-700 lg:text-2xl sm:px-16 xl:px-48 max-w-4xl mx-auto leading-relaxed">
+            <div class="opacity-0 animate-fade-in-up animate-delay-200 mb-12 text-md font-normal text-slate-700 lg:text-2xl px-4 mx-auto leading-relaxed">
                 <?php echo hg_exibir_campo_acf('texto_apresentacao', 'editor', 'configuracoes'); ?>
             </div>
             
