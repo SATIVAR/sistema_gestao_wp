@@ -194,8 +194,16 @@ function cpf_pwd_render_step1() {
     ?>
     <div style="max-width: 400px; margin: 2rem auto; padding: 2rem; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
         <div style="text-align: center; margin-bottom: 2rem;">
-            <img src="<?php echo hg_exibir_campo_acf('logo_horizontal', 'img', 'configuracoes'); ?>" class="h-16 mb-5 mx-auto" alt="Logo ASSOC">
-
+  
+                <?php
+                $logo_url = hg_exibir_campo_acf('logo_horizontal', 'img', 'configuracoes');
+                if (!empty($logo_url)) {
+                    $imagem_final = $logo_url;
+                } else {
+                    $imagem_final = get_stylesheet_directory_uri() . '/assets/images/logo_hori.png';
+                }
+                ?>
+                <img src="<?php echo $imagem_final; ?>" alt="SATIVAR" class="h-16 mb-5 mx-auto">
             <h1 style="font-size: 1.5rem; font-weight: 600; color: #777; margin: 0 0 0.5rem 0; line-height: 1.2;">Recuperar Senha</h1>
             <p style="color: #64748b; font-size: 0.875rem; line-height: 1.5; margin: 0;">Informe seu CPF e celular para continuar com a recuperação da sua senha.</p>
         </div>
