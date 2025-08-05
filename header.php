@@ -16,7 +16,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       <meta name="next-head-count" content="2" />
       <meta charset="utf-8" />
-      <title>AMEDIS - ASSOCIAÇÃO MEDICINAL DE DIREITO A SAÚDE</title>
+      <title>ACAMED, oferecemos conhecimento, cuidado e acesso responsável à cannabis medicinal</title>
       <meta name="description" content="AMEDIS - Acesso à Saúde para Todos" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
