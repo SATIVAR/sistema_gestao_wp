@@ -17,7 +17,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       <meta name="next-head-count" content="2" />
       <meta charset="utf-8" />
-      <title>ACAMED, oferecemos conhecimento, cuidado e acesso responsável à cannabis medicinal</title>
+      <title>SATIVAR - Modernizando o Atendimento</title>
       <meta name="description" content="Acesso à Saúde para Todos" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
