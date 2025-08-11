@@ -1157,6 +1157,7 @@ class ModernFileUpload {
         const formData = new FormData();
         formData.append('action', 'upload_associado_file');
         formData.append('file', file);
+        formData.append('security', window.uploadAssociadoNonce); 
         
         this.showProgress();
         
