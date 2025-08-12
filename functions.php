@@ -1,5 +1,16 @@
 <?php
 /**
+ * Ativa o suporte para a funcionalidade de título dinâmico (title-tag).
+ *
+ * Com esta funcionalidade ativa, o WordPress gere automaticamente a tag <title>
+ * no <head> do documento, garantindo as melhores práticas de SEO.
+ */
+function meu_tema_suporte_titulo() {
+    add_theme_support( 'title-tag' );
+}
+add_action( 'after_setup_theme', 'meu_tema_suporte_titulo' );
+
+/**
  * Restringe o acesso às páginas wp-login.php e wp-admin.php.
  *
  * Impede que usuários não logados e usuários logados que não são administradores
