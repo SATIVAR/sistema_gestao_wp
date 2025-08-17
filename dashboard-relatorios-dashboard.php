@@ -12,8 +12,10 @@
 /*
 Template Name: Dashboard - Relatorios Dashboard
 */
-if (!current_user_can('administrator') && !current_user_can('gerente') && !user_has_area_access('relatorios')) {
-    wp_redirect(home_url());
+// Define o role do usuário atual
+$current_user_role = sativar_get_user_role_safe(get_current_user_id());
+if ($current_user_role !== 'super_admin' && $current_user_role !== 'gerente') {
+    wp_safe_redirect(home_url());
     exit;
 }
 

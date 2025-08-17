@@ -21,7 +21,9 @@ Twenty Twenty-Two is distributed under the terms of the GNU GPL.
  * This is a niche setting that will not be available via Global Styles.
  * https://github.com/WordPress/gutenberg/issues/35934
  */
-
+.cky-btn-revisit-wrapper {
+    display: none!important;
+}
 /* ===== SCROLLBAR STYLING - LIGHT MODE ===== */
 
 /* Webkit Browsers (Chrome, Safari, Edge) */

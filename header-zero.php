@@ -4,9 +4,9 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
- * @package ASSOC
- * @subpackage CAJU
- * @since ASSOC - CAJU 1.0
+ * @package SATIVAR
+ * @subpackage SATIVARAPP
+ * @since SATIVAR - SATIVARAPP 1.0
  */
 
 ?>

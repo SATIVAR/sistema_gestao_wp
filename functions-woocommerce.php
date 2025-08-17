@@ -1786,11 +1786,13 @@ function get_order_display_data($order) {
     $receitas_data = [];
     $receitas_html = ''; // Nova variável para o HTML das receitas
     $ids_receitas_str = $order->get_meta('selected_receitas');
+    $tem_receitas = false; // Inicializa como false
 
     if (!empty($ids_receitas_str)) {
         $ids_receitas = array_filter(array_map('intval', explode(',', $ids_receitas_str)));
 
         if (!empty($ids_receitas)) {
+            $tem_receitas = true; // Marca que tem receitas
             $receitas_html .= '<ul class="space-y-2">';
             foreach ($ids_receitas as $recipe_id) {
                 $receita = get_post($recipe_id);
@@ -1849,6 +1851,16 @@ function get_order_display_data($order) {
     $formatted_shipping_address = $order->get_formatted_shipping_address();
     $subtotal_display = $order->get_subtotal_to_display();
     $total_tax        = $order->get_total_tax();
+    
+    // Montar cidade e estado para infos_extra
+    $cidade_estado = '';
+    if (!empty($shipping_address['city']) || !empty($shipping_address['state'])) {
+        $cidade_parts = array_filter([
+            $shipping_address['city'] ?? '',
+            $shipping_address['state'] ?? ''
+        ]);
+        $cidade_estado = implode(' - ', $cidade_parts);
+    }
 
     // Nova lógica para detalhar taxas, descontos e entrega
     $order_fees = [];
@@ -1912,6 +1924,8 @@ function get_order_display_data($order) {
         'fez_uso_canabis_escolha'   => $fez_uso_canabis_escolha,
         'observacoes_user'          => $observacoes_user,
         'order_status_slug'         => $order_status_slug, // <-- Adicionado para o JS
+        'cidade_estado'             => $cidade_estado, // <-- Adicionado para infos_extra
+        'tem_receitas'              => $tem_receitas, // <-- Adicionado para infos_extra
     ];
 }
 

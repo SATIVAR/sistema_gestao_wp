@@ -16,7 +16,7 @@ add_action( 'after_setup_theme', 'meu_tema_suporte_titulo' );
  * Impede que usuários não logados e usuários logados que não são administradores
  * acessem as páginas wp-login.php e wp-admin.php. Eles serão redirecionados para a página inicial.
  * Apenas administradores logados podem acessar essas páginas.
- *
+ */
 function restringir_wp_login() {
     // Verifica se a página atual é wp-login.php OU wp-admin.php e a ação não é 'logout'
     if ( 
@@ -39,7 +39,7 @@ function restringir_wp_login() {
 
 // Adiciona a função para ser executada no carregamento inicial do WordPress
 add_action('init', 'restringir_wp_login');
-*/
+
 // Carrega sistema isolado primeiro, pois contém funções base
 function load_isolated_systems() {
     // Sistema isolado de relatórios (deve ser carregado primeiro)
@@ -130,6 +130,7 @@ require_once( get_stylesheet_directory() . '/functions-juridico.php' );
 require_once( get_stylesheet_directory() . '/functions-tarefas.php' );
 require_once( get_stylesheet_directory() . '/functions-relatorios-associados.php' );
 require_once( get_stylesheet_directory() . '/functions-user-profile.php' );
+require_once( get_stylesheet_directory() . '/functions-funcao-usuarios.php' );
 
 function enqueue_dashboard_scripts() {
     if (is_page_template('dashboard-relatorios-associados.php')) {

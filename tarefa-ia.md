@@ -1,41 +1,100 @@
-O erro Uncaught SyntaxError: missing ) after argument list indica que há um parêntese de fechamento ) faltando em algum lugar do seu arquivo dashboard-user-profile.js, especificamente na linha 1039, coluna 9. Esse tipo de erro geralmente ocorre por:
+Plano de Ação: Modal de Troca de Senha para Super Admin
+Baseado na análise do arquivo, vou implementar um modal funcional que será exibido apenas para super admins. Aqui está o plano:
 
-Parênteses abertos não fechados corretamente em funções, chamadas de função, ou expressões.
-Uso incorreto de vírgulas, chaves ou colchetes que podem confundir o parser do JavaScript.
-Plano de Ação para Resolver o Erro
-1. Localizar a Linha do Erro
-A linha 1039 é o ponto onde o parser do JS detectou o erro, mas o problema pode estar algumas linhas antes.
-Procure por funções, chamadas de função, ou blocos de código imediatamente antes dessa linha.
-2. Revisar Parênteses, Colchetes e Chaves
-Verifique se todas as funções, métodos, e blocos possuem seus parênteses, colchetes e chaves corretamente abertos e fechados.
-Use o recurso de "highlight matching brackets" do seu editor para facilitar.
-3. **Buscar por Vírgulas ou Sintax
-e Incorreta**
+1. Modificar o elemento "Alterar Senha"
+Transformar o link atual em um botão clicável
 
-Erros comuns incluem vírgulas a mais ou a menos, especialmente em objetos e arrays.
-4. Revisar Funções Aninhadas
-Funções anônimas ou callbacks podem ser especialmente propensas a esse tipo de erro.
-5. Utilizar Ferramentas de Lint
-Use um linter (como ESLint) ou o próprio console do navegador para identificar o local exato do erro.
-6. Testar Após Correção
-Após corrigir, recarregue a página e veja se o erro persiste ou se outro erro de sintaxe aparece.
-Exemplo Prático
-No seu arquivo, a linha 1039 está dentro de um bloco de código extenso. Aqui está um trecho próximo ao final do arquivo (por volta da linha 1039):
+Adicionar condição para mostrar apenas para super admins
 
-javascript
+Incluir atributos data para identificar o usuário
+
+2. Criar o Modal HTML
+Modal responsivo com formulário de troca de senha
+
+Campos para nova senha e confirmação
+
+Botões de ação (salvar/cancelar)
+
+Validação visual
+
+3. Implementar JavaScript
+Função para abrir/fechar modal
+
+Validação de formulário
+
+Requisição AJAX para processar a troca
+
+Feedback visual de sucesso/erro
+
+4. Adicionar CSS
+Estilos para o modal
+
+Animações de entrada/saída
+
+Responsividade
+
+Implementação:
+Modificações necessárias:
+
+Linha 69 - Substituir o link "Alterar Senha" por:
+
+<?php if ($current_user_role === 'super_admin'): ?>
+    <button class="change-password-btn text-sm font-medium text-blue-600 hover:text-blue-800 mb-3 cursor-pointer" 
+            data-user-id="<?php echo $user->ID; ?>" 
+            data-user-name="<?php echo esc_attr($user->display_name); ?>">
+        🔑 Alterar Senha
+    </button>
+<?php endif; ?>
 
 Copy
 
-Insert
+Insert at cursor
+php
+Adicionar o Modal HTML antes do fechamento da tag </main>:
 
-Apply
-Problema:
-Note que há um return; e um } solto após o fechamento da função showModernNotification. Isso não faz sentido no contexto do JavaScript, pois o return; está fora de qualquer função, e o } extra pode estar fechando algo que não deveria.
+<!-- Modal de Troca de Senha -->
+<div id="password-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Alterar Senha</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <form id="password-form">
+            <input type="hidden" id="target-user-id">
+            <div class="form-group">
+                <label>Nova Senha:</label>
+                <input type="password" id="new-password" required>
+            </div>
+            <div class="form-group">
+                <label>Confirmar Senha:</label>
+                <input type="password" id="confirm-password" required>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel">Cancelar</button>
+                <button type="submit" class="btn-save">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-Ação Imediata
-Remova o return; e o } extra após o fechamento da função showModernNotification.
-Resumo do Plano de Ação
-Vá até a linha 1039 e revise o bloco de código imediatamente anterior.
-Remova ou corrija parênteses, chaves ou returns fora de contexto.
-Salve o arquivo e recarregue a página para verificar se o erro foi resolvido.
-Se necessário, repita o processo para outros erros de sintaxe que possam aparecer.
+Copy
+
+Insert at cursor
+html
+Adicionar CSS para o Modal
+
+Implementar JavaScript para funcionalidade
+
+Criar handler AJAX no WordPress
+
+O modal será:
+
+✅ Visível apenas para super admins
+
+✅ Funcional com validação
+
+✅ Integrado ao design existente
+
+✅ Responsivo
+
+✅ Sem quebrar funcionalidades existentes

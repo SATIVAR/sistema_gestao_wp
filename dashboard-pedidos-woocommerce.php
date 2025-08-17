@@ -112,6 +112,27 @@ if ( !is_user_logged_in() ) {
     /* Ajustes para a Scrollbar Horizontal na Tabela - FIM */
     /* ************************************************************ */
 
+    /* Estilos para as notificações de cópia */
+    .copy-notification {
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        transform: translateX(0);
+        opacity: 1;
+        transition: all 0.3s ease;
+    }
+
+    /* Estilos para as informações extras */
+    .infos_extra {
+        min-height: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .infos_extra .text-xs {
+        line-height: 1.4;
+    }
+
     .child-row-content {
         max-height: 0;
         overflow: hidden;
@@ -329,6 +350,10 @@ if ( !is_user_logged_in() ) {
                                                 'forma_entrega_woo' => $forma_entrega_woo,
                                                 'status_entrega' => $status_entrega,
                                                 'order_status_slug' => $order_status_slug,
+                                                'cidade_estado' => $cidade_estado,
+                                                'tem_receitas' => $tem_receitas,
+                                                'status_dot_color' => $status_dot_color, // Adicionado para o JS
+                                                'status_text' => $status_text, // Adicionado para o JS
                                             );
                                             ?>
 
@@ -367,6 +392,26 @@ if ( !is_user_logged_in() ) {
                                                                     </a>
                                                                 </div>
                                                             <?php endif; ?>
+                                                            <div class="infos_extra" data-order-id="<?php echo $order_id; ?>">
+                                                                <?php if (!empty($cidade_estado)): ?>
+                                                                    <div class="text-xs text-gray-600 mt-1 flex items-center gap-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 text-gray-400">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                                                        </svg>
+                                                                        <span><?php echo esc_html($cidade_estado); ?></span>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                                
+                                                                <?php if (!$tem_receitas): ?>
+                                                                    <div class="text-xs text-red-600 mt-1 flex items-center gap-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 text-red-500">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                                                                        </svg>
+                                                                        <span>Sem receitas</span>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                            </div>
                                                              <div class="text-xs text-gray-500 mt-1.5">
                                                                 Pedido <a href="<?php echo esc_url($order->get_edit_order_url()); ?>" target="_blank" class="text-blue-600 hover:text-blue-700 hover:underline transition-colors duration-200">#<?php echo $order_id; ?></a> - <?php echo $order_date; ?>
                                                             </div>
@@ -450,22 +495,44 @@ if ( !is_user_logged_in() ) {
                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
                                                          </a>
 
-                                                         <a href="#" data-id="<?php echo $order_id; ?>" title="Copiar Informações" class="copyInfos inline-flex items-center justify-center p-2 border border-orange-300 shadow-sm rounded-full text-orange-700 bg-orange-50 hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" /></svg>
-                                                         </a>
+<button id="dropdownMenuIconButton-<?php echo $order_id; ?>" data-dropdown-toggle="dropdownDots-<?php echo $order_id; ?>" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-slate-100 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button">
+<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+<path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+</svg>
+</button>
 
-                                                        <a href="<?php echo esc_url(amedis_get_edit_order_url($order_id)); ?>" title="Editar Pedido" class="inline-flex items-center justify-center p-2 border border-blue-300 shadow-sm rounded-full text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>
-                                                        </a>
-                                                        <?php if (!$is_paid): ?>
-                                                            <a href="<?php echo esc_url($pay_url); ?>" title="Realizar Pagamento" class="inline-flex items-center justify-center p-2 border border-green-300 shadow-sm rounded-full text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200">
-                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" /></svg>
-                                                            </a>
-                                                        <?php else: ?>
-                                                            <span class="inline-flex items-center justify-center p-2 font-medium text-green-800 bg-green-100 rounded-full">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                                                            </span>
-                                                        <?php endif; ?>
+<!-- Dropdown menu -->
+<div id="dropdownDots-<?php echo $order_id; ?>" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44">
+    <div class="px-4 py-3 text-sm text-gray-900 text-left">
+      <div>Configurações</div>
+      <div class="font-medium truncate text-xs">PEDIDO: #<?php echo $order_id; ?></div>
+    </div>    
+    <ul class="py-2 text-sm text-gray-700 text-left" aria-labelledby="dropdownMenuIconButton-<?php echo $order_id; ?>">
+      <li>
+        <a href="<?php echo esc_url(amedis_get_edit_order_url($order_id)); ?>" class="block px-4 py-2 hover:bg-gray-100" title="Copiar Informações">Editar Pedido</a>
+      </li>        
+      <li>
+        <a href="#" data-id="<?php echo $order_id; ?>" class="copyInfos block px-4 py-2 hover:bg-gray-100" title="Copiar Informações">Extração/Entrega</a>
+      </li>
+      <li>
+        <a href="#" data-order-id="<?php echo $order_id; ?>" class="copyPacienteInfo block px-4 py-2 hover:bg-gray-100">Enviar Paciente</a>
+      </li>
+    </ul>
+    <div class="py-2 text-left">
+
+        <?php if (!$is_paid): ?>
+            <a href="#!<?php // echo esc_url($pay_url); ?>" title="Realizar Pagamento" class="block px-4 py-2 text-sm text-green-700 hover:bg-gray-100">
+                Realizar Pagamento
+            </a>
+        <?php else: ?>
+            <a href="#!" title="Realizar Pagamento" class="cursor-not-allowed block px-4 py-2 text-sm text-red-700 hover:bg-gray-100">
+                Realizar Pagamento
+            </a>
+        <?php endif; ?>
+    </div>    
+</div>
+
+
                                                     </div>
                                                 </td>
                                             </tr>
@@ -782,6 +849,13 @@ OBSERVAÇÕES
                                 // Atualiza apenas a célula de status (coluna 2, índice 1)
                                 $(row.node()).find('td').eq(1).html(renderStatusCell(newData));
 
+                                // Atualiza as informações extras (cidade/estado e alerta de receitas)
+                                if (typeof window.DashboardWooCommerce !== 'undefined' && window.DashboardWooCommerce.OrderManager) {
+                                    window.DashboardWooCommerce.OrderManager.updateInfosExtra(orderId, newData);
+                                } else {
+                                    updateInfosExtra(orderId, newData);
+                                }
+
                                 // Opcional, mas bom: redesenha a linha para que o DataTables reconheça a mudança
                                 // sem alterar os dados de outras colunas. O 'false' impede a paginação.
                                 row.invalidate().draw(false);
@@ -858,6 +932,49 @@ OBSERVAÇÕES
                     <span class="text-gray-900">${data.formatted_order_total}</span>
                 </div>
             </div>`;
+        }
+
+        function updateInfosExtra(orderId, data) {
+            const infosExtraContainer = $(`.infos_extra[data-order-id="${orderId}"]`);
+            if (infosExtraContainer.length === 0) {
+                console.warn('[DEBUG] Container infos_extra não encontrado para pedido:', orderId);
+                return;
+            }
+
+            console.debug('[DEBUG] updateInfosExtra chamado para pedido:', orderId, 'com dados:', data);
+
+            let infosHtml = '';
+            
+            // Adicionar cidade e estado se disponível
+            if (data.cidade_estado && data.cidade_estado.trim() !== '') {
+                console.debug('[DEBUG] Adicionando cidade_estado:', data.cidade_estado);
+                infosHtml += `
+                    <div class="text-xs text-gray-600 mt-1 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 text-gray-400">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                        </svg>
+                        <span>${data.cidade_estado}</span>
+                    </div>
+                `;
+            }
+            
+            // Adicionar alerta de receitas se não tiver receitas
+            if (!data.tem_receitas) {
+                console.debug('[DEBUG] Adicionando alerta sem receitas');
+                infosHtml += `
+                    <div class="text-xs text-red-600 mt-1 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 text-red-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                        <span>Sem receitas</span>
+                    </div>
+                `;
+            }
+            
+            // Atualizar o conteúdo
+            infosExtraContainer.html(infosHtml);
+            console.debug('[DEBUG] Informações extras atualizadas para pedido:', orderId, 'HTML final:', infosHtml);
         }
 
         function renderActionsCell(data, isAdmin) {
@@ -960,8 +1077,249 @@ OBSERVAÇÕES
             `;
         }
     });
+
+    // Manipulador de eventos para o link "Enviar Paciente"
+    $(document).on('click', '.copyPacienteInfo', function(e) {
+        e.preventDefault();
+        
+        const orderId = $(this).data('order-id');
+        console.log('[DEBUG] Clicou em Enviar Paciente para pedido:', orderId);
+        
+        // Buscar os dados do pedido no objeto global
+        const orderData = allOrderDetails[orderId];
+        
+        if (!orderData) {
+            console.error('[ERROR] Dados do pedido não encontrados:', orderId);
+            alert('Erro: Dados do pedido não encontrados.');
+            return;
+        }
+        
+        console.log('[DEBUG] Dados do pedido encontrados:', orderData);
+        
+        // Função auxiliar para limpar HTML e formatar texto
+        function cleanHtmlText(htmlText) {
+            if (!htmlText) return '';
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlText;
+            return (tempDiv.textContent || tempDiv.innerText || htmlText)
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/<[^>]*>/g, '')
+                .replace(/&nbsp;/g, ' ')
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&#82;&#36;/g, 'R$')
+                .trim();
+        }
+        
+        // Função auxiliar para extrair valor monetário limpo
+        function cleanPrice(priceHtml) {
+            if (!priceHtml) return '';
+            return cleanHtmlText(priceHtml);
+        }
+        
+        // Formatar o texto conforme solicitado
+        let textoFormatado = `*PEDIDO #${orderId}*\n\n`;
+        
+        // Adicionar nome do cliente
+        if (orderData.customer_name) {
+            textoFormatado += `*Cliente:* ${orderData.customer_name}\n`;
+        }
+        
+        // Adicionar responsável se existir
+        if (orderData.nome_completo_respon && orderData.nome_completo_respon.trim() !== '') {
+            textoFormatado += `*Responsável:* ${orderData.nome_completo_respon}\n`;
+        }
+        
+        // Adicionar telefone
+        if (orderData.billing_phone) {
+            textoFormatado += `*Telefone:* ${orderData.billing_phone}\n`;
+        }
+        
+        textoFormatado += `\n*PRODUTOS:*\n`;
+        
+        // Adicionar produtos com quantidade e valor unitário
+        if (orderData.items && orderData.items.length > 0) {
+            orderData.items.forEach(function(item) {
+                textoFormatado += `• ${item.name}`;
+                
+                // Adicionar quantidade
+                if (item.quantity && item.quantity > 0) {
+                    textoFormatado += ` (Qtd: ${item.quantity})`;
+                }
+                
+                // Adicionar valor unitário (que já vem no subtotal)
+                if (item.subtotal) {
+                    textoFormatado += ` - Valor Unit: ${cleanPrice(item.subtotal)}`;
+                }
+                
+                // Calcular e adicionar total do item (valor unitário × quantidade)
+                if (item.subtotal && item.quantity && item.quantity > 0) {
+                    const subtotalLimpo = cleanPrice(item.subtotal);
+                    // Extrair apenas números e vírgula/ponto do preço
+                    const valorNumerico = subtotalLimpo.replace(/[^\d,.-]/g, '').replace(',', '.');
+                    if (valorNumerico && !isNaN(parseFloat(valorNumerico))) {
+                        const totalItem = (parseFloat(valorNumerico) * item.quantity).toFixed(2).replace('.', ',');
+                        if (item.quantity > 1) {
+                            textoFormatado += ` - Total: R$ ${totalItem}`;
+                        }
+                    }
+                }
+                
+                textoFormatado += `\n`;
+            });
+        }
+        
+        // Adicionar endereço de entrega (limpar HTML)
+        if (orderData.formatted_shipping_address) {
+            const enderecoLimpo = cleanHtmlText(orderData.formatted_shipping_address);
+            textoFormatado += `\n*ENDEREÇO DE ENTREGA:*\n${enderecoLimpo}\n`;
+        }
+        
+        // Adicionar informações financeiras
+        textoFormatado += `\n*VALORES:*\n`;
+        
+        if (orderData.subtotal_display) {
+            textoFormatado += `Subtotal: ${cleanPrice(orderData.subtotal_display)}\n`;
+        }
+        
+        // Adicionar taxas (frete, etc.) - corrigir undefined
+        if (orderData.order_fees && orderData.order_fees.length > 0) {
+            orderData.order_fees.forEach(function(fee) {
+                if (fee.name && fee.value) {
+                    textoFormatado += `${fee.name}: ${cleanPrice(fee.value)}\n`;
+                }
+            });
+        }
+        
+        // Adicionar impostos se houver
+        if (orderData.total_tax_display && orderData.total_tax > 0) {
+            textoFormatado += `Impostos: ${cleanPrice(orderData.total_tax_display)}\n`;
+        }
+        
+        // Adicionar total
+        if (orderData.formatted_order_total) {
+            textoFormatado += `*TOTAL: ${cleanPrice(orderData.formatted_order_total)}*\n`;
+        }
+        
+        // Adicionar forma de pagamento
+        if (orderData.operational_statuses && orderData.operational_statuses._forma_pagamento_woo) {
+            textoFormatado += `\n*Forma de Pagamento:* ${orderData.operational_statuses._forma_pagamento_woo.label}\n`;
+        } else if (orderData.forma_pagamento_woo) {
+            textoFormatado += `\n*Forma de Pagamento:* ${orderData.forma_pagamento_woo}\n`;
+        }
+        
+        // Adicionar informações operacionais
+        if (orderData.operational_statuses && orderData.operational_statuses._forma_entrega_woo) {
+            textoFormatado += `*Forma de Entrega:* ${orderData.operational_statuses._forma_entrega_woo.label}\n`;
+        } else if (orderData.forma_entrega_woo) {
+            textoFormatado += `*Forma de Entrega:* ${orderData.forma_entrega_woo}\n`;
+        }
+        
+        if (orderData.operational_statuses && orderData.operational_statuses._status_entrega) {
+            textoFormatado += `*Status da Entrega:* ${orderData.operational_statuses._status_entrega.label}\n`;
+        } else if (orderData.status_entrega) {
+            textoFormatado += `*Status da Entrega:* ${orderData.status_entrega}\n`;
+        }
+        
+        // Adicionar extração
+        if (orderData.operational_statuses && orderData.operational_statuses._extracao) {
+            textoFormatado += `*Extração:* ${orderData.operational_statuses._extracao.label}\n`;
+        } else if (orderData.extracao) {
+            textoFormatado += `*Extração:* ${orderData.extracao}\n`;
+        }
+        
+        // REMOVER RECEITAS E LAUDOS conforme solicitado
+        // (Código das receitas removido)
+        
+        // Adicionar observações se houver
+        if (orderData.observacoes_user && orderData.observacoes_user.trim() !== '') {
+            textoFormatado += `\n*OBSERVAÇÕES:*\n${cleanHtmlText(orderData.observacoes_user)}\n`;
+        }
+        
+        console.log('[DEBUG] Texto formatado:', textoFormatado);
+        
+        // Copiar para a área de transferência
+        if (navigator.clipboard && window.isSecureContext) {
+            // Método moderno para HTTPS
+            navigator.clipboard.writeText(textoFormatado).then(function() {
+                console.log('[SUCCESS] Texto copiado para a área de transferência');
+                
+                // Exibir notificação de sucesso
+                showNotification('Informações do paciente copiadas com sucesso!', 'success');
+                
+            }).catch(function(err) {
+                console.error('[ERROR] Erro ao copiar texto:', err);
+                fallbackCopyTextToClipboard(textoFormatado);
+            });
+        } else {
+            // Fallback para HTTP ou navegadores mais antigos
+            fallbackCopyTextToClipboard(textoFormatado);
+        }
+    });
+    
+    // Função fallback para copiar texto
+    function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                console.log('[SUCCESS] Texto copiado usando fallback');
+                showNotification('Informações do paciente copiadas com sucesso!', 'success');
+            } else {
+                console.error('[ERROR] Falha ao copiar usando fallback');
+                showNotification('Erro ao copiar informações. Tente novamente.', 'error');
+            }
+        } catch (err) {
+            console.error('[ERROR] Erro no fallback:', err);
+            showNotification('Erro ao copiar informações. Tente novamente.', 'error');
+        }
+        
+        document.body.removeChild(textArea);
+    }
+    
+    // Função para exibir notificações
+    function showNotification(message, type = 'success') {
+        // Remover notificação existente se houver
+        const existingNotification = document.querySelector('.copy-notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+        
+        // Criar nova notificação
+        const notification = document.createElement('div');
+        notification.className = `copy-notification fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg transition-all duration-300 ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        notification.textContent = message;
+        
+        // Adicionar ao DOM
+        document.body.appendChild(notification);
+        
+        // Remover após 3 segundos
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
 </script>
 
 <?php } ?>
+
+<script src="<?php echo get_template_directory_uri(); ?>/assets/js/dashboard-woocommerce.js"></script>
 
 <?php get_footer(); ?>
