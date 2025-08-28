@@ -520,6 +520,46 @@ add_action( 'wp_ajax_delete_simple_product', 'amedis_delete_simple_product' );
 // Já verificamos se o WooCommerce está ativo em functions.php, então não precisamos verificar novamente aqui
 defined('ABSPATH') || exit;
 
+/**
+ * Função auxiliar para verificar se uma receita está vencida
+ * 
+ * @param string $data_vencimento Data no formato dd/mm/yyyy
+ * @return bool True se a receita estiver vencida, false caso contrário
+ */
+if (!function_exists('hg_is_receita_vencida')) {
+    function hg_is_receita_vencida($data_vencimento) {
+        // Se a data estiver vazia ou nula, considera como válida (não vencida)
+        if (empty($data_vencimento)) {
+            return false;
+        }
+        
+        try {
+            // Tenta converter a data do formato dd/mm/yyyy para DateTime
+            $data_vencimento_obj = DateTime::createFromFormat('d/m/Y', trim($data_vencimento));
+            
+            // Se a conversão falhou, considera como válida por segurança
+            if (!$data_vencimento_obj) {
+                error_log('[DEBUG] hg_is_receita_vencida: Formato de data inválido: ' . $data_vencimento);
+                return false;
+            }
+            
+            // Define o horário para o final do dia (23:59:59) para dar o dia completo
+            $data_vencimento_obj->setTime(23, 59, 59);
+            
+            // Compara com a data atual
+            $data_atual = new DateTime();
+            
+            // Retorna true se a data de vencimento for menor que a data atual
+            return $data_vencimento_obj < $data_atual;
+            
+        } catch (Exception $e) {
+            // Em caso de erro, considera como válida por segurança
+            error_log('[DEBUG] hg_is_receita_vencida: Erro ao processar data: ' . $e->getMessage());
+            return false;
+        }
+    }
+}
+
 // Declara a função no escopo global para garantir que ela esteja disponível
 if (!function_exists('get_order_display_data')) {
     /**
@@ -1787,6 +1827,11 @@ function get_order_display_data($order) {
     $receitas_html = ''; // Nova variável para o HTML das receitas
     $ids_receitas_str = $order->get_meta('selected_receitas');
     $tem_receitas = false; // Inicializa como false
+    
+    // Variáveis para controle de receitas vencidas
+    $tem_receitas_vencidas = false;
+    $count_receitas_vencidas = 0;
+    $receitas_vencidas_texto = '';
 
     if (!empty($ids_receitas_str)) {
         $ids_receitas = array_filter(array_map('intval', explode(',', $ids_receitas_str)));
@@ -1804,6 +1849,11 @@ function get_order_display_data($order) {
                     $data_vencimento = !empty($data_vencimento_raw) ? esc_html($data_vencimento_raw) : 'Não informada';
                     $receita_href    = !empty($arquivo_receita_id) ? esc_url(wp_get_attachment_url($arquivo_receita_id)) : '#!';
                     $laudo_href      = !empty($arquivo_laudo_id) ? esc_url(wp_get_attachment_url($arquivo_laudo_id)) : '#!';
+
+                    // Verificar se a receita está vencida
+                    if (!empty($data_vencimento_raw) && hg_is_receita_vencida($data_vencimento_raw)) {
+                        $count_receitas_vencidas++;
+                    }
 
                     $receitas_data[] = [ // Mantém para a função de cópia
                         'id'                => $receita->ID,
@@ -1839,6 +1889,12 @@ function get_order_display_data($order) {
                 }
             }
             $receitas_html .= '</ul>';
+            
+            // Definir status de receitas vencidas após processar todas as receitas
+            if ($count_receitas_vencidas > 0) {
+                $tem_receitas_vencidas = true;
+                $receitas_vencidas_texto = $count_receitas_vencidas === 1 ? 'Receita vencida' : 'Receitas vencidas';
+            }
         } else {
             $receitas_html = '<p class="text-sm text-gray-500 bg-gray-100 p-3 rounded-lg border border-gray-200">Nenhuma receita encontrada para este pedido.</p>';
         }
@@ -1926,6 +1982,9 @@ function get_order_display_data($order) {
         'order_status_slug'         => $order_status_slug, // <-- Adicionado para o JS
         'cidade_estado'             => $cidade_estado, // <-- Adicionado para infos_extra
         'tem_receitas'              => $tem_receitas, // <-- Adicionado para infos_extra
+        'tem_receitas_vencidas'     => $tem_receitas_vencidas, // <-- Adicionado para alertas de vencimento
+        'count_receitas_vencidas'   => $count_receitas_vencidas, // <-- Contagem de receitas vencidas
+        'receitas_vencidas_texto'   => $receitas_vencidas_texto, // <-- Texto do alerta de vencimento
     ];
 }
 

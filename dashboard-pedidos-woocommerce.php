@@ -352,6 +352,9 @@ if ( !is_user_logged_in() ) {
                                                 'order_status_slug' => $order_status_slug,
                                                 'cidade_estado' => $cidade_estado,
                                                 'tem_receitas' => $tem_receitas,
+                                                'tem_receitas_vencidas' => $tem_receitas_vencidas, // Adicionado para alertas de vencimento
+                                                'count_receitas_vencidas' => $count_receitas_vencidas, // Contagem de receitas vencidas
+                                                'receitas_vencidas_texto' => $receitas_vencidas_texto, // Texto do alerta de vencimento
                                                 'status_dot_color' => $status_dot_color, // Adicionado para o JS
                                                 'status_text' => $status_text, // Adicionado para o JS
                                             );
@@ -400,6 +403,15 @@ if ( !is_user_logged_in() ) {
                                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                                                         </svg>
                                                                         <span><?php echo esc_html($cidade_estado); ?></span>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                                
+                                                                <?php if ($tem_receitas_vencidas): ?>
+                                                                    <div class="text-xs text-red-600 mt-1 flex items-center gap-1">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 text-red-500">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                                                                        </svg>
+                                                                        <span><?php echo esc_html($receitas_vencidas_texto); ?></span>
                                                                     </div>
                                                                 <?php endif; ?>
                                                                 
